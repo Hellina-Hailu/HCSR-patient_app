@@ -4,35 +4,57 @@ import 'package:http/http.dart';
 
 import 'package:flutter_bcrypt/flutter_bcrypt.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
+final storage=FlutterSecureStorage();
+
 
 // Create a Form widget.
-class SignUpForm extends StatefulWidget {
+class EditProfileForm extends StatefulWidget {
+  final String Firstname;
+  final String Lastname;
+  final String Username;
+  EditProfileForm({Key key, @required this.Firstname, @required this.Username, @required this.Lastname}): super(key:key);
   @override
-  SignUpFormState createState() {
-    return SignUpFormState();
+  EditProfileFormState createState() {
+    return EditProfileFormState();
   }
 }
 
-class SignUpFormState extends State<SignUpForm> {
+class EditProfileFormState extends State<EditProfileForm> {
 
   final _formKey = GlobalKey<FormState>();
   String serverResponse = '';
   int serverStatus;
-  List pharmacies;
+
   String _hash="";
   // Create a text controller and use it to retrieve the current value
   // of the TextField.
   final usernameController = TextEditingController();
-  final passwordController = TextEditingController();
+  final passwordCurrentController = TextEditingController();
+  final passwordNewController = TextEditingController();
   final emailController = TextEditingController();
   final firstNameController = TextEditingController();
   final lastNameController = TextEditingController();
+  
+  @override
+  void initState()  {
+
+    super.initState();
+    firstNameController.text=widget.Firstname;
+    lastNameController.text=widget.Lastname;
+    usernameController.text=widget.Username;
+
+
+  }
+
 
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
     usernameController.dispose();
-    passwordController.dispose();
+    passwordCurrentController.dispose();
+    passwordNewController.dispose();
      emailController.dispose();
      firstNameController.dispose();
      lastNameController.dispose();
@@ -61,13 +83,13 @@ class SignUpFormState extends State<SignUpForm> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             TextFormField(
+              //initialValue: "widget.Firstname",
               decoration: InputDecoration(
                 border: InputBorder.none,
 
-                hintText: 'First Name',
-
               ),
               controller: firstNameController,
+
               validator: (value) {
                 if (value.isEmpty) {
                   return 'Please enter some text';
@@ -79,7 +101,7 @@ class SignUpFormState extends State<SignUpForm> {
               decoration: InputDecoration(
                 border: InputBorder.none,
 
-                hintText: 'Last Name',
+
 
               ),
               controller: lastNameController,
@@ -94,7 +116,7 @@ class SignUpFormState extends State<SignUpForm> {
               decoration: InputDecoration(
                 border: InputBorder.none,
 
-                hintText: 'Username',
+
 
               ),
               controller: usernameController,
@@ -112,10 +134,21 @@ class SignUpFormState extends State<SignUpForm> {
                 decoration: InputDecoration(
                   border: InputBorder.none,
 
-                  hintText: 'Password',
+                  hintText: 'Current Password',
 
                 ),
-                controller: passwordController
+                controller: passwordCurrentController
+            ),
+            TextFormField(
+
+                obscureText: true,
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+
+                  hintText: 'New Password',
+
+                ),
+                controller: passwordNewController
             ),
 
 
@@ -126,10 +159,10 @@ class SignUpFormState extends State<SignUpForm> {
 
                   RaisedButton(
 
-                    child: Text('SignUp'),
+                    child: Text('Update'),
 
                     onPressed: () {
-                      _signupdata();
+                      _updatedata();
 
                     },
                   ),
@@ -152,29 +185,31 @@ class SignUpFormState extends State<SignUpForm> {
   }
 
 
-  Future<String>_signupdata() async {
+  Future<String>_updatedata() async {
+    var userInfo= await storage.read(key: "token");
+    var userID= jsonDecode(userInfo)["userData"]["userID"];
     String firstName=(firstNameController.text).toString();
     String lastName=(lastNameController.text).toString();
     String userName=(usernameController.text).toString();
-    String passwordPlain=(passwordController.text).toString();
-    hash(passwordPlain);
-    String password=_hash;
-    print(password);
-    // String email=(emailController.text).toString();
+    String passwordCurrentPlain=(passwordCurrentController.text).toString();
+    String passwordNewPlain=(passwordNewController.text).toString();
+    print(passwordNewPlain);
 
     var jsonData= json.encode(
       {
+        "OriginalUsername": widget.Username,
         "Firstname": firstName,
         "Lastname": lastName,
         "Username": userName,
-        "Password": password,
-        "JobDescription": "Patient"
-
+        "PasswordCurrent": passwordCurrentPlain,
+        "PasswordNew": passwordNewPlain,
+        "JobDescription": "Patient",
+        "UserID": userID
       }
 
     );
-print("sending dta"+ jsonData);
-    Response response = await post( "http://10.0.2.2:3007/signup",headers: {"content-type": "application/json"},body:jsonData);
+print("sending data"+ jsonData);
+    Response response = await post( "http://10.0.2.2:3007/updatepatinetprofile",headers: {"content-type": "application/json"},body:jsonData);
    print(response.body);
      setState(() {
 
@@ -188,7 +223,7 @@ print("sending dta"+ jsonData);
       else if(serverStatus==200){
 
         serverResponse = response.body;
-        Navigator.pushNamed(context, '/');
+        Navigator.pushNamed(context, '/home');
 
       }
       print(serverResponse);

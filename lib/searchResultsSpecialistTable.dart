@@ -102,9 +102,9 @@ class _SimpleTableState extends State<SimpleTable> {
   String _localhost(specialist) {
 
     if (Platform.isAndroid)
-      return 'http://10.0.2.2:3002/specialist/$specialist';
+      return 'http://10.0.2.2:3007/specialist/$specialist';
     else // for iOS simulator
-      return 'http://10.0.2.2:3002/labratory/searchlabtest/moxal';
+      return 'http://10.0.2.2:3007/labratory/searchlabtest/moxal';
   }
 
 

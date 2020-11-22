@@ -1,18 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'rate_services.dart';
+import 'rate_lab.dart';
 import 'drawer.dart';
 
-class PharmacyProfile extends StatefulWidget {
-  final List<dynamic> pharmacy;
+class LabProfile extends StatefulWidget {
+  final List<dynamic> lab;
 
-  PharmacyProfile({Key key, @required this.pharmacy}) : super(key: key);
+  LabProfile({Key key, @required this.lab}) : super(key: key);
 
   @override
-  _PharmacyProfileState createState() => _PharmacyProfileState();
+  _LabProfileState createState() => _LabProfileState();
 }
 
-class _PharmacyProfileState extends State<PharmacyProfile> {
+class _LabProfileState extends State<LabProfile> {
 
 
 
@@ -26,7 +26,7 @@ class _PharmacyProfileState extends State<PharmacyProfile> {
         body:  Stack(
           children: <Widget>[
 
-            _buildPharmacyProfileContainer(context),
+            _buildLabProfileContainer(context),
         ],
 
         ),
@@ -35,7 +35,7 @@ class _PharmacyProfileState extends State<PharmacyProfile> {
   }
 
 
-  Widget _buildPharmacyProfileContainer(BuildContext context) {
+  Widget _buildLabProfileContainer(BuildContext context) {
     return Align(
       alignment: Alignment.topCenter,
       child: Container(
@@ -46,8 +46,8 @@ class _PharmacyProfileState extends State<PharmacyProfile> {
         child: ListView(
           scrollDirection: Axis.horizontal,
             children: <Widget>[
-        for(int i=0; i<widget.pharmacy.length; i ++)
-          Pharmacycards(i),
+        for(int i=0; i<widget.lab.length; i ++)
+          Labcards(i),
     ]
         )
         ,
@@ -55,7 +55,7 @@ class _PharmacyProfileState extends State<PharmacyProfile> {
       ),
     );
   }
-  Widget _boxes(String _image,int index,  double lat,double long,String PharmacyName) {
+  Widget _boxes(String _image,int index,  double lat,double long,String LabName) {
     return  GestureDetector(
       onTap: () {
 
@@ -77,7 +77,7 @@ class _PharmacyProfileState extends State<PharmacyProfile> {
                   Container(
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: PharmacyDetailsContainer(PharmacyName, index),
+                      child: LabDetailsContainer(LabName, index),
                     ),
                   ),
 
@@ -89,14 +89,14 @@ class _PharmacyProfileState extends State<PharmacyProfile> {
     );
   }
 
-  Widget PharmacyDetailsContainer(String PharmacyName, int index) {
+  Widget LabDetailsContainer(String LabName, int index) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
         Padding(
           padding: const EdgeInsets.only(left: 8.0),
           child: Container(
-              child: Text(PharmacyName,
+              child: Text(LabName,
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: 24.0,
@@ -112,7 +112,7 @@ class _PharmacyProfileState extends State<PharmacyProfile> {
          Column(
            children: <Widget>[
              SizedBox(height: 20),
-             Text("Pharmacy Info",style: TextStyle(
+             Text("Lab Info",style: TextStyle(
                color: Colors.white,
                fontSize: 18.0,
              ), ),
@@ -120,7 +120,7 @@ class _PharmacyProfileState extends State<PharmacyProfile> {
                children: <Widget>[
                  Container(
                      child: Text(
-                       widget.pharmacy[index]["City"],
+                       widget.lab[index]["City"],
                        style: TextStyle(
                          color: Colors.white,
                          fontSize: 18.0,
@@ -128,7 +128,7 @@ class _PharmacyProfileState extends State<PharmacyProfile> {
                      )),
                  Container(
                      child: Text(
-                       ", Woroda "+  widget.pharmacy[index]["Woreda"].toString(),
+                       ", Woroda "+  widget.lab[index]["Woreda"].toString(),
                        style: TextStyle(
                            color: Colors.white,
                            fontSize: 18.0,
@@ -138,7 +138,7 @@ class _PharmacyProfileState extends State<PharmacyProfile> {
 
                  Container(
                      child: Text(
-                       widget.pharmacy[index]["PhoneNo"].toString(),
+                       widget.lab[index]["PhoneNo"].toString(),
                        style: TextStyle(
                            color: Colors.white,
                            fontSize: 18.0,
@@ -154,7 +154,7 @@ class _PharmacyProfileState extends State<PharmacyProfile> {
                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                    children: <Widget>[
 
-                     RatingServices(pharmacyID: widget.pharmacy[index]["PharmacyID"], initialRating: widget.pharmacy[index]["Rating"]),
+                     RatingLab(labID: widget.lab[index]["LabID"], initialRating: widget.lab[index]["Rating"]),
 
                    ],
                  )),
@@ -171,7 +171,7 @@ class _PharmacyProfileState extends State<PharmacyProfile> {
       ],
     );
   }
-  Widget Pharmacycards(int index){
+  Widget Labcards(int index){
 
     return Row(
       children: <Widget>[
@@ -182,7 +182,7 @@ class _PharmacyProfileState extends State<PharmacyProfile> {
           // padding: const EdgeInsets.all(8.0),
           child:  _boxes(
               "https:", index,
-              widget.pharmacy[index]["Latitude"], widget.pharmacy[index]["Longitude"],widget.pharmacy[index]["PharmacyName"]
+              widget.lab[index]["Latitude"], widget.lab[index]["Longitude"],widget.lab[index]["LabName"]
           ),
 
         ),

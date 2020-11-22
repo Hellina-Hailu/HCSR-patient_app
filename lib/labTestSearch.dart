@@ -112,9 +112,9 @@ class LabTestSearchState extends State<LabTestSearch> {
     String labtestname = (LabTestSearchTermController.text).toString();
     print(labtestname);
     if (Platform.isAndroid)
-      return 'http://10.0.2.2:3002/labratory/searchlabtest/$labtestname';
+      return 'http://10.0.2.2:3007/labratory/searchlabtest/$labtestname';
     else // for iOS simulator
-      return 'http://10.0.2.2:3002/labratory/searchlabtest/$labtestname';
+      return 'http://10.0.2.2:3007/labratory/searchlabtest/$labtestname';
   }
 
 

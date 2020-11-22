@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'dart:io';
 import 'dart:convert';
 import 'package:http/http.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
+final storage= FlutterSecureStorage();
 // Create a Form widget.
 class LoginForm extends StatefulWidget {
   @override
@@ -122,7 +124,7 @@ class LoginFormState extends State<LoginForm> {
 
     });
 
-    Response response = await post('http://10.0.2.2:3002/loginpatient',headers: {"content-type": "application/json"},body:jsonData);
+    Response response = await post('http://10.0.2.2:3007/loginpatient',headers: {"content-type": "application/json"},body:jsonData);
     setState(() {
 
       serverStatus= response.statusCode;
@@ -135,6 +137,8 @@ class LoginFormState extends State<LoginForm> {
       else if(serverStatus==200){
 
         serverResponse = response.body;
+        storage.write(key: "token", value: serverResponse);
+
         Navigator.pushNamed(context, '/home');
 
       }

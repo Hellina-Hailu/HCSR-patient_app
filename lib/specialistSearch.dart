@@ -114,9 +114,9 @@ class SpecialistSearchState extends State<SpecialistSearch> {
     String specialityname = (SpecialityNameController.text).toString();
     print(specialityname);
     if (Platform.isAndroid)
-      return 'http://10.0.2.2:3002/specialist/searchspeciality/$specialityname';
+      return 'http://10.0.2.2:3007/specialist/searchspeciality/$specialityname';
     else // for iOS simulator
-      return 'http://10.0.2.2:3002/labratory/searchlabtest/moxal';
+      return 'http://10.0.2.2:3007/labratory/searchlabtest/moxal';
   }
 
 

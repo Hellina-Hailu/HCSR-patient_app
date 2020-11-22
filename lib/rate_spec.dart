@@ -5,19 +5,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:http/http.dart';
 import 'viewReviews.dart';
-import 'writePharmacyReview.dart';
+import 'writeSpecReview.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 final storage= FlutterSecureStorage();
-class RatingServices extends StatefulWidget{
-  final int pharmacyID;
+class RatingSpec extends StatefulWidget{
+  final int specID;
   final int initialRating;
-  RatingServices({Key key, @required this.pharmacyID, @required this.initialRating}): super(key:key);
+  RatingSpec({Key key, @required this.specID, @required this.initialRating}): super(key:key);
 
   @override
-  _RatingServicesState createState() => _RatingServicesState();
+  _RatingSpecState createState() => _RatingSpecState();
 
 }
-class _RatingServicesState extends State<RatingServices>{
+class _RatingSpecState extends State<RatingSpec>{
   var rating;
   var token;
   String serverResponse = '';
@@ -52,7 +52,7 @@ class _RatingServicesState extends State<RatingServices>{
              onPressed: () async{
                token =await storage.read(key: "token");
                var userID= jsonDecode(token)["userData"]["userID"];
-               SendRatingValue(rating, userID, widget.pharmacyID);
+               SendRatingValue(rating, userID, widget.specID);
 
              },
            ),
@@ -62,7 +62,7 @@ class _RatingServicesState extends State<RatingServices>{
                Navigator.push(
                    context,
                    MaterialPageRoute(
-                     builder: (context)=> PharmacyReview(pharmacyID: widget.pharmacyID),
+                     builder: (context)=> SpecReview(specID: widget.specID),
                    ))
              },
 
@@ -70,7 +70,7 @@ class _RatingServicesState extends State<RatingServices>{
            FlatButton(
              child: Text("View other reviews"),
              onPressed: ()=>{
-               _getReview(widget.pharmacyID),
+               _getReview(widget.specID),
              Navigator.push(
              context,
              MaterialPageRoute(
@@ -94,8 +94,8 @@ class _RatingServicesState extends State<RatingServices>{
 
     );
   }
-  Future<String> _getReview(int pharmacyID) async{
-    Response response= await get ("http://10.0.2.2:3007/pharmacy/readreviews/$pharmacyID");
+  Future<String> _getReview(int specID) async{
+    Response response= await get ("http://10.0.2.2:3007/specialist/readreviews/$specID");
     print(response.body);
 
     setState(() {
@@ -115,11 +115,11 @@ class _RatingServicesState extends State<RatingServices>{
     });
 
   }
- Future<String> SendRatingValue(rating, userID, pharmacyID) async{
+ Future<String> SendRatingValue(rating, userID, specID) async{
     print(rating);
-    var jsonData=json.encode({"rating":rating, "userID": userID, "pharmacyID": pharmacyID});
+    var jsonData=json.encode({"rating":rating, "userID": userID, "specID": specID});
       print(jsonData);
-      Response response = await post( "http://10.0.2.2:3007/pharmacy/rate/pharmacy",headers: {"content-type": "application/json"}, body:jsonData);
+      Response response = await post( "http://10.0.2.2:3007/specialist/rate",headers: {"content-type": "application/json"}, body:jsonData);
       print(response.body);
       setState(() {
 

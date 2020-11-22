@@ -34,13 +34,13 @@ class _RatingHomePage extends State<RatingHomePage>{
                          RaisedButton(
                            child: Text("Laboratory"),
                            onPressed: ()=>{
-
+                             Navigator.pushNamed(context, '/searchlab')
                              },
                          ),
                          RaisedButton(
                            child: Text("Specialist"),
                            onPressed: ()=>{
-
+                             Navigator.pushNamed(context, '/searchspecialist')
 
                              },
                          )

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'labSearch.dart';
+import 'specSearch.dart';
 import 'home.dart';
 import 'medicineSearch.dart';
 import 'labTestSearch.dart';
@@ -7,7 +9,9 @@ import 'login.dart';
 import 'signUpPage.dart';
 import 'ratingHomePage.dart';
 import 'pharmacySearch.dart';
-
+import 'writePharmacyReview.dart';
+import 'viewReviews.dart';
+import 'editProfile.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -27,8 +31,10 @@ class MyApp extends StatelessWidget {
         '/specialistSearch': (context)=> SpecialistSearch(),
         '/ratinghomepage': (context)=> RatingHomePage(),
         '/searchpharmacy': (context)=> SearchPharmacy(),
-
-
+        '/searchlab': (context)=> SearchLaboratory(),
+        '/searchspecialist': (context)=> SearchSpecialist(),
+        '/writePharmacyReview': (context)=> PharmacyReview(),
+       // '/editprofile': (context)=> EditProfileForm(),
       },
       theme: ThemeData(
         buttonTheme: ButtonThemeData(

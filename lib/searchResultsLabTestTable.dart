@@ -21,7 +21,7 @@ class _SimpleTableState extends State<SimpleTable> {
     var json = jsonDecode(widget.jsonSample);
     var columns= [JsonTableColumn("LabName", label: "Laboratory Name"),
     JsonTableColumn("City", label: "City"),
-   // JsonTableColumn("Amount", label: "Amount")
+    JsonTableColumn("Price", label: "Price(ETB)")
     ];
     return Scaffold(
       drawer: appDrawer(),

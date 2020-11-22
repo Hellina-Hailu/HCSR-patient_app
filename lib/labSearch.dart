@@ -2,21 +2,21 @@ import 'dart:io';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
-import 'package:flutter_app_2/pharmacyProfile.dart';
+import 'labProfile.dart';
 import 'package:http/http.dart';
 import "drawer.dart";
 import "package:flutter_rating_bar/flutter_rating_bar.dart";
 import 'rate_services.dart';
 
 
-class SearchPharmacy extends StatefulWidget {
+class SearchLaboratory extends StatefulWidget {
   @override
- SearchPharmacyState createState() {
-    return new SearchPharmacyState();
+  SearchLaboratoryState createState() {
+    return new SearchLaboratoryState();
   }
 }
 
-class SearchPharmacyState extends State<SearchPharmacy> {
+class SearchLaboratoryState extends State<SearchLaboratory> {
 
   String serverResponse = '';
   String topRated='';
@@ -24,19 +24,19 @@ class SearchPharmacyState extends State<SearchPharmacy> {
   List labs;
 
 
-  final PharmacyNameController = TextEditingController();
+  final LaboratoryNameController = TextEditingController();
 
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
-    PharmacyNameController.dispose();
+    LaboratoryNameController.dispose();
     super.dispose();
   }
   @override
   void initState() {
 
     super.initState();
-    _getTopRatedPharmacies();
+    _getTopRatedLabs();
 
   }
 
@@ -70,10 +70,10 @@ class SearchPharmacyState extends State<SearchPharmacy> {
                             decoration: InputDecoration(
                               // border: InputBorder.none,
 
-                                hintText: 'Enter the Pharmacy Name'
+                                hintText: 'Enter the Laboratory Name'
                             ),
 
-                            controller: PharmacyNameController
+                            controller: LaboratoryNameController
                         ),
 
 
@@ -85,7 +85,7 @@ class SearchPharmacyState extends State<SearchPharmacy> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context)=> PharmacyProfile(pharmacy: jsonDecode(serverResponse)),
+                                  builder: (context)=> LabProfile(lab: jsonDecode(serverResponse)),
                                 ));
                           },
                         ),
@@ -103,7 +103,7 @@ class SearchPharmacyState extends State<SearchPharmacy> {
               ),
             ),
             SizedBox(height: 10,),
-            Text("Top Rated Pharmacies"),
+            Text("Top Rated Labs"),
             Align(
               alignment: Alignment.topCenter,
               child: Container(
@@ -114,10 +114,10 @@ class SearchPharmacyState extends State<SearchPharmacy> {
                     scrollDirection: Axis.horizontal,
 
                     children: <Widget>[
-                      //display top rated pharmacies here.
-                      //   PharmacyProfile(pharmacy: jsonDecode(topRated)),
+                      //display top rated labs here.
 
-                      _buildPharmacyProfileContainer(topRated),
+
+                      _buildLabProfileContainer(topRated),
 
                     ]
                 ),
@@ -137,8 +137,8 @@ class SearchPharmacyState extends State<SearchPharmacy> {
     );
   }
 
-  _getTopRatedPharmacies() async{
-    Response response= await get("http://10.0.2.2:3007/pharmacy/toprated");
+  _getTopRatedLabs() async{
+    Response response= await get("http://10.0.2.2:3007/lab/toprated");
     setState(() {
       serverStatus = response.statusCode;
       if (serverStatus == 404) {
@@ -171,15 +171,15 @@ class SearchPharmacyState extends State<SearchPharmacy> {
   }
 
   String _localhost() {
-    String pharmacyname = (PharmacyNameController.text).toString();
+    String labname = (LaboratoryNameController.text).toString();
 
     if (Platform.isAndroid)
-      return 'http://10.0.2.2:3007/pharmacy/searchpharmacy/$pharmacyname';
+      return 'http://10.0.2.2:3007/lab/searchlab/$labname';
     else // for iOS simulator
-      return 'http://10.0.2.2:3007/pharmacy/searchpharmacy/$pharmacyname';
+      return 'http://10.0.2.2:3007/lab/searchlab/$labname';
   }
-  Widget _buildPharmacyProfileContainer(String toprated) {
-    var pharmacyInfo=jsonDecode(toprated);
+  Widget _buildLabProfileContainer(String toprated) {
+    var labInfo=jsonDecode(toprated);
     return Align(
       alignment: Alignment.topCenter,
       child: Container(
@@ -190,8 +190,8 @@ class SearchPharmacyState extends State<SearchPharmacy> {
         child: ListView(
             scrollDirection: Axis.horizontal,
             children: <Widget>[
-              for(int i=0; i<pharmacyInfo.length; i ++)
-                PharmacyCards(i, pharmacyInfo),
+              for(int i=0; i<labInfo.length; i ++)
+                LabCards(i, labInfo),
             ]
         )
         ,
@@ -201,7 +201,7 @@ class SearchPharmacyState extends State<SearchPharmacy> {
 
   }
 
-  Widget PharmacyCards(int index, List<dynamic> info)
+  Widget LabCards(int index, List<dynamic> info)
   {
     return Row(
       children: <Widget>[
@@ -242,7 +242,7 @@ class SearchPharmacyState extends State<SearchPharmacy> {
                   Container(
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: PharmacyDetailsContainer(index, info),
+                      child: LabDetailsContainer(index, info),
                     ),
                   ),
 
@@ -254,14 +254,14 @@ class SearchPharmacyState extends State<SearchPharmacy> {
     );
   }
 
-  Widget PharmacyDetailsContainer(int index, List<dynamic> info) {
+  Widget LabDetailsContainer(int index, List<dynamic> info) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
         Padding(
           padding: const EdgeInsets.only(left: 8.0),
           child: Container(
-              child: Text(info[index]["PharmacyName"],
+              child: Text(info[index]["LabName"],
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: 24.0,
@@ -277,7 +277,7 @@ class SearchPharmacyState extends State<SearchPharmacy> {
             Column(
               children: <Widget>[
                 SizedBox(height: 20),
-                Text("Pharmacy Info",style: TextStyle(
+                Text("Lab Info",style: TextStyle(
                   color: Colors.white,
                   fontSize: 18.0,
                 ), ),

@@ -24,7 +24,7 @@ class _mapsPharmacyState extends State<mapsPharmacy> {
   LocationData _currentLocations;
   Location location;
   GoogleMapPolyline _googleMapPolyline =
-  new GoogleMapPolyline(apiKey: "API KEY");
+  new GoogleMapPolyline(apiKey: "YOUR API KEY");
 
 
   @override

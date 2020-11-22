@@ -111,9 +111,9 @@ class MedicineSearchState extends State<MedicineSearch> {
     String medname = (MedicneSearchTermController.text).toString();
     print(medname);
     if (Platform.isAndroid)
-      return 'http://10.0.2.2:3002/pharmacy/searchmed/$medname';
+      return 'http://10.0.2.2:3007/pharmacy/searchmed/$medname';
     else // for iOS simulator
-      return 'http://10.0.2.2:3002/pharmacy/searchmed/$medname';
+      return 'http://10.0.2.2:3007/pharmacy/searchmed/$medname';
   }
 
 

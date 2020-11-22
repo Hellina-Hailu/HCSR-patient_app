@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'drawer.dart';
-
-
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+final storage=FlutterSecureStorage();
 class Home extends StatefulWidget {
   @override
   HomeState createState() {
@@ -10,6 +10,8 @@ class Home extends StatefulWidget {
 }
 
 class HomeState extends State<Home> {
+  var value;
+
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +41,8 @@ class HomeState extends State<Home> {
                       child: Text('Medicine'),
 
                       onPressed: () {
+                     // value= await storage.read(key: 'token');
+                     // print(value);
                         Navigator.pushNamed(context, '/medicineSearch');
 
                       },
